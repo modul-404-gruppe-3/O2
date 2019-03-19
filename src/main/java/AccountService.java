@@ -29,15 +29,18 @@ public class AccountService implements IStopable, IProgram {
     }
 
     private void handleAccountCreation() {
-        System.out.println("bitte geben sie den namen des Accounts an, denn sie erstellen möchten:");
+        System.out.println("bitte geben sie den Namen des Accounts an, den sie erstellen möchten:");
         String name = getScanner().next();
         accounts.put(name, new Account(0, name));
     }
 
     private void handleAccountOperations() {
         System.out.println("geben sie einen Accountnamen ein:");
-        Account account = accounts.get(getScanner().next("Dieser Account existiert nicht, versuchen sie es erneut!",
-                            accounts.keySet().toArray(new String[0])));
+
+        String[] allAccountNames = accounts.keySet().toArray(new String[0]);
+        String accountName = getScanner().next("Dieser Account existiert nicht, versuchen sie es erneut!", allAccountNames);
+        Account account = accounts.get(accountName);
+
         System.out.println("bitte gebe ein, was du machen willst:");
         System.out.println("1 - Abheben");
         System.out.println("2 - Hinzufügen");
