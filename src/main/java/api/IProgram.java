@@ -2,7 +2,6 @@ package api;
 
 import java.util.Scanner;
 
-
 /**
  * This interface is used to mark a class as a Main Class for a IProgram
  */
