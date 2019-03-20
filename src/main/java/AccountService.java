@@ -1,5 +1,6 @@
 import api.IProgram;
 import api.IStopable;
+import lombok.Getter;
 
 import java.util.HashMap;
 
@@ -9,6 +10,9 @@ import java.util.HashMap;
  */
 public class AccountService implements IStopable, IProgram {
     public HashMap<String, Account> accounts = new HashMap<>();
+
+    @Getter
+    boolean stop = false;
 
     /**
      * This Method will be executed every time the Program gets started. This means that it will be executed every time
@@ -25,9 +29,11 @@ public class AccountService implements IStopable, IProgram {
         System.out.println("Bitte gebe ein ob du einen Account erstellen oder dich bei einem anmelden möchtest:");
         System.out.println("1 - Account erstellen");
         System.out.println("2 - sich bei Account anmelden!");
-        String input = getScanner().next("Fehlerhafte eingabe, versuchen sie es erneut!", "1", "2");
+        System.out.println("3 - Accounts auflisten");
+        String input = getScanner().next("Fehlerhafte eingabe, versuchen sie es erneut!", "1", "2", "3");
 
         if (input == null) {
+            stop = true;
             return;
         }
 
@@ -37,6 +43,12 @@ public class AccountService implements IStopable, IProgram {
                 break;
             case "2":
                 handleAccountOperations();
+                break;
+            case "3":
+                System.out.println("Alle Accounts:");
+                for (String s : accounts.keySet()) {
+                    System.out.println(s);
+                }
                 break;
         }
     }
