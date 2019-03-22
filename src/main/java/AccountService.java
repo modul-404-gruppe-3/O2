@@ -9,10 +9,13 @@ import java.util.HashMap;
  * level Methods.
  */
 public class AccountService implements IStopable, IProgram {
-    public HashMap<String, Account> accounts = new HashMap<>();
-
     @Getter
     boolean stop = false;
+    private AccountManager manager;
+
+    public AccountService(AccountManager manager) {
+        this.manager = manager;
+    }
 
     /**
      * This Method will be executed every time the Program gets started. This means that it will be executed every time
@@ -21,7 +24,7 @@ public class AccountService implements IStopable, IProgram {
      */
     @Override
     public void execute() {
-        if (accounts.size() < 1) {
+        if (manager.getAccountCount() < 1) {
             handleAccountCreation();
             return;
         }
@@ -46,7 +49,7 @@ public class AccountService implements IStopable, IProgram {
                 break;
             case "3":
                 System.out.println("Alle Accounts:");
-                for (String s : accounts.keySet()) {
+                for (String s : manager.getAccountNames()) {
                     System.out.println(s);
                 }
                 break;
@@ -64,7 +67,7 @@ public class AccountService implements IStopable, IProgram {
             return;
         }
 
-        accounts.put(name, new Account(0, name));
+        manager.addAccount(new Account(0, name));
     }
 
     /**
@@ -74,9 +77,9 @@ public class AccountService implements IStopable, IProgram {
     private void handleAccountOperations() {
         System.out.println("geben sie einen Accountnamen ein:");
 
-        String[] allAccountNames = accounts.keySet().toArray(new String[0]);
+        String[] allAccountNames = manager.getAccountNames().toArray(new String[0]);
         String accountName = getScanner().next("Dieser Account existiert nicht, versuchen sie es erneut!", allAccountNames);
-        Account account = accounts.get(accountName);
+        Account account = manager.getAccount(accountName);
 
         System.out.println("bitte gebe ein, was du machen willst:");
         System.out.println("1 - Abheben");
@@ -103,7 +106,7 @@ public class AccountService implements IStopable, IProgram {
                 break;
             case "4":
                 System.out.println("sie haben den Account " + account.getName() + " gelöscht!");
-                accounts.remove(account.getName());
+                manager.removeAccount(account.getName());
                 break;
         }
     }

@@ -32,4 +32,9 @@ public class Account {
         }
         this.bilanz -= amount;
     }
+
+    public void transfer(Account account, double amount) {
+        this.takeMoney(amount);
+        account.addMoney(amount);
+    }
 }
