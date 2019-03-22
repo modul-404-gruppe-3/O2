@@ -64,10 +64,33 @@ public class AccountService implements IStopable, IProgram {
         String name = getScanner().next();
 
         if (name == null) {
+            System.out.println("Account erstellen abgebrochen.");
             return;
         }
 
-        manager.addAccount(new Account(0, name));
+        if (manager.exists(name)) {
+            System.out.println("Dieser Account existiert bereits, sicher das du diesen überschreiben willst? ('y' für ja, 'n' für nein)");
+            String input = getScanner().next("Bitte gebe entwerder 'y' oder 'n' ein.", "y", "n", "Y", "N");
+            switch (input.toLowerCase()) {
+                case "n":
+                    System.out.println("Account erstellen abgebrochen.");
+                    return;
+                case "y":
+                    System.out.println("okay, account wird überschrieben!");
+                    break;
+            }
+        }
+
+        System.out.println("Bitte geben sie Ihr startkapital ein.");
+        Double startKapital = getScanner().nextDouble("Bitte geben sie eine Valide Zahl grösser oder gleich 0 ein!", aDouble -> aDouble >= 0);
+
+        if (startKapital == null) {
+            System.out.println("Account erstellen abgebrochen.");
+            return;
+        }
+
+        manager.addAccount(new Account(startKapital, name));
+        System.out.println("Account mit dem Namen " + name + " wurde erstellt!");
     }
 
     /**
@@ -79,23 +102,34 @@ public class AccountService implements IStopable, IProgram {
 
         String[] allAccountNames = manager.getAccountNames().toArray(new String[0]);
         String accountName = getScanner().next("Dieser Account existiert nicht, versuchen sie es erneut!", allAccountNames);
+
+        if (accountName == null) {
+            System.out.println("Account anmelden abgebrochen!");
+            return;
+        }
+
         Account account = manager.getAccount(accountName);
+
+        allAccountNames = manager.getAccountNames().stream().filter(s -> !s.equalsIgnoreCase(accountName)).toArray(String[]::new);
+
 
         System.out.println("bitte gebe ein, was du machen willst:");
         System.out.println("1 - Abheben");
         System.out.println("2 - Hinzufügen");
         System.out.println("3 - Bilanz anzeigen");
-        System.out.println("4 - Löschen");
-        String input = getScanner().next("Invalider Input, versuchen sie es erneut!", "1", "2", "3", "4");
+        System.out.println("4 - Geld überweisen");
+        System.out.println("5 - Löschen");
+        String input = getScanner().next("Invalider Input, versuchen sie es erneut!", "1", "2", "3", "4", "5");
 
         if (input == null) {
+            System.out.println("Auswahl abgebrochen.");
             return;
         }
         switch (input) {
             case "1":
                 System.out.println("Bitte geben sie eine Zahl ein:");
 
-                account.takeMoney(getScanner().nextDouble("Bitte geben sie eine Valide Zahl grösser als 0 ein!", aDouble -> aDouble > 0));
+                account.takeMoney(getScanner().nextDouble("Bitte geben sie eine Valide Zahl grösser als 0 ein!", aDouble -> aDouble > 0  && account.getBilanz() - aDouble > 0));
                 break;
             case "2":
                 System.out.println("Bitte geben sie eine Zahl ein:");
@@ -105,6 +139,28 @@ public class AccountService implements IStopable, IProgram {
                 System.out.println("sie haben Aktuell " + account.getBilanz() + " auf ihrem Konto!");
                 break;
             case "4":
+                System.out.println("geben sie den Namen des Accounts an auf den sie Geld überweisen wollen.");
+                String targetAccountName = getScanner().next("Dieser Account existiert nicht, bitte versuchen sie er erneut.", allAccountNames);
+
+                if (targetAccountName == null) {
+                    System.out.println("Überweisung abgebrochen.");
+                    return;
+                }
+
+                Account targetAccount = manager.getAccount(targetAccountName);
+                System.out.println("geben sie bitte jetzt an, wie viel sie überweisen wollen.");
+                Double amount = getScanner().nextDouble("Bitte geben sie eine Valide Zahl grösser als 0 ein, die auf ihrem Konto vorhanden ist!", aDouble -> aDouble > 0 && account.getBilanz() - aDouble > 0);
+
+
+                if (amount == null) {
+                    System.out.println("Überweisung abgebrochen.");
+                    return;
+                }
+
+                account.transfer(targetAccount, amount);
+                System.out.println("Du hast " + targetAccountName + " " + amount + " " + " überwiesen.");
+                break;
+            case "5":
                 System.out.println("sie haben den Account " + account.getName() + " gelöscht!");
                 manager.removeAccount(account.getName());
                 break;
