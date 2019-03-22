@@ -7,6 +7,9 @@ import java.util.HashMap;
 /**
  * the main class behind the account system, this class is most responsible for the Gui part and it will call more low
  * level Methods.
+ *
+ * This Service is not designed to be able to work Concurrent, it can handle multiple accounts but it can not really
+ * handle multiple Users at once.
  */
 public class AccountService implements IStopable, IProgram {
     @Getter
@@ -19,7 +22,7 @@ public class AccountService implements IStopable, IProgram {
 
     /**
      * This Method will be executed every time the Program gets started. This means that it will be executed every time
-     * the Program in intsself will be started as well es everty time a Action like see Bank balance is complete and the
+     * the Program in initsself will be started as well es every time a Action like see Bank balance is complete and the
      * user choses not to stop the program via the stop command.
      */
     @Override

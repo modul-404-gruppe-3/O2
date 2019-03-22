@@ -33,6 +33,11 @@ public class Account {
         this.bilanz -= amount;
     }
 
+    /**
+     * If the Account is null this will give a NullPointerException.
+     * @param account The Target Account.
+     * @param amount the Amount that should be send from the current account to the account from the first parameter.
+     */
     public void transfer(Account account, double amount) {
         this.takeMoney(amount);
         account.addMoney(amount);
