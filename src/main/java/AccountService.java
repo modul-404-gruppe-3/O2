@@ -158,7 +158,7 @@ public class AccountService implements IStopable, IProgram {
                 }
 
                 account.transfer(targetAccount, amount);
-                System.out.println("Du hast " + targetAccountName + " " + amount + " " + " überwiesen.");
+                System.out.println("Du hast " + targetAccountName + " " + amount + " überwiesen.");
                 break;
             case "5":
                 System.out.println("sie haben den Account " + account.getName() + " gelöscht!");
