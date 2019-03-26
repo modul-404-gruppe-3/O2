@@ -12,6 +12,11 @@ public class InternalScanner {
     private final Scanner scanner;
     private final IProgram IProgram;
 
+    /**
+     *
+     * @param scanner the scanner object that will be used for all Operations in this Scanner
+     * @param IProgram the program that will be checked on for the IStopable Interface.
+     */
     public InternalScanner(Scanner scanner, IProgram IProgram) {
         this.scanner = scanner;
         this.IProgram = IProgram;
