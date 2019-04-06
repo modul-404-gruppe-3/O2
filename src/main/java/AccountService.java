@@ -58,7 +58,8 @@ public class AccountService implements IStopable, IProgram {
     }
 
     /**
-     * This Method creates Accounts regaredless if the already exists or not, if the account already exists it will be overriden.
+     * This Method is a Part the GUI for the Account Management.
+     * It Handles the creation of the Account as well as the default ammount.
      */
     private void handleAccountCreation() {
         System.out.println("bitte geben sie den Namen des Accounts an, den sie erstellen möchten:");
