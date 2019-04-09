@@ -11,7 +11,7 @@ public class AccountManager {
     }
 
     /**
-     * sets a Account, even if it already exists.
+     * sets an Account, even if it already exists.
      * @param account
      */
     public void addAccount(Account account) {

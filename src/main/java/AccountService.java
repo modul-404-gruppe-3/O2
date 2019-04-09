@@ -1,5 +1,6 @@
 import api.IProgram;
 import api.IStopable;
+import jdk.jfr.Unsigned;
 import lombok.Getter;
 
 /**
@@ -131,7 +132,7 @@ public class AccountService implements IStopable, IProgram {
             case "1":
                 System.out.println("Bitte geben sie eine Zahl ein:");
 
-                account.takeMoney(getScanner().nextDouble("Bitte geben sie eine Valide Zahl grösser als 0 ein!", aDouble -> aDouble > 0  && account.getBilanz() - aDouble > 0));
+                account.takeMoney(getScanner().nextDouble("Bitte geben sie eine Valide Zahl grösser als 0 ein, deren Betrag sie besitzen!", aDouble -> aDouble > 0  && account.getBilanz() - aDouble > 0));
                 break;
             case "2":
                 System.out.println("Bitte geben sie eine Zahl ein:");
@@ -151,7 +152,7 @@ public class AccountService implements IStopable, IProgram {
 
                 Account targetAccount = manager.getAccount(targetAccountName);
                 System.out.println("geben sie bitte jetzt an, wie viel sie überweisen wollen.");
-                Double amount = getScanner().nextDouble("Bitte geben sie eine Valide Zahl grösser als 0 ein, die auf ihrem Konto vorhanden ist!", aDouble -> aDouble > 0 && account.getBilanz() - aDouble > 0);
+                Double amount = getScanner().nextDouble("Bitte geben sie eine Valide Zahl grösser als 0 ein, deren Betrag sie besitzen!", aDouble -> aDouble > 0 && account.getBilanz() - aDouble > 0);
 
 
                 if (amount == null) {
