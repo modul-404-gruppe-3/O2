@@ -1,8 +1,5 @@
-import api.IProgram;
-import api.IStopable;
-import jdk.jfr.Unsigned;
 import lombok.Getter;
-import service.api.IProgram;
+import service.api.AbstractProgram;
 import service.api.IStopable;
 
 /**
@@ -12,7 +9,7 @@ import service.api.IStopable;
  * This Service is not designed to be able to work Concurrent, it can handle multiple accounts but it can not really
  * handle multiple Users at once.
  */
-public class AccountService implements IStopable, IProgram {
+public class AccountService extends AbstractProgram implements IStopable {
     @Getter
     boolean stop = false;
     private AccountManager manager;
